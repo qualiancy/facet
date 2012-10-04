@@ -1,7 +1,7 @@
 {
     "name": "facet"
   , "version": "0.0.0"
-  , "description": "Node adapter for Apple Push Notification Service"
+  , "description": "Configuration mixin for javascript constructors."
   , "author": "Jake Luer <jake@alogicalpardox.com> (http://alogicalparadox.com)"
   , "license": "MIT"
   , "keywords": [

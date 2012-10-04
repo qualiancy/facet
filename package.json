@@ -1,6 +1,6 @@
 {
     "name": "facet"
-  , "version": "0.0.0"
+  , "version": "0.1.0"
   , "description": "Configuration mixin for javascript constructors."
   , "author": "Jake Luer <jake@alogicalpardox.com> (http://alogicalparadox.com)"
   , "license": "MIT"

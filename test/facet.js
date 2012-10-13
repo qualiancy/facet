@@ -40,6 +40,14 @@ describe('facet', function () {
       checkMethods(obj);
     });
 
+    it('works without init', function () {
+      var obj = {};
+      facet.bind(obj);
+      obj.set('hello', 'universe');
+      checkMethods(obj);
+
+    });
+
   });
 
   describe('configuration', function () {

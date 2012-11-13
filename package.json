@@ -1,18 +1,16 @@
 {
     "name": "facet"
   , "version": "0.2.1"
-  , "description": "Configuration mixin for javascript constructors."
-  , "author": "Jake Luer <jake@alogicalpardox.com> (http://alogicalparadox.com)"
+  , "description": "Configuration mixin for constructors."
+  , "author": "Jake Luer <jake@qualiancy.com> (http://qualiancy.com)"
   , "license": "MIT"
   , "keywords": [
         "configure"
       , "settings"
-      , "prototype"
-      , "extend"
     ]
   , "repository": {
         "type": "git"
-      , "url": "git@github.com:logicalparadox/facet.git"
+      , "url": "git@github.com:qualiancy/facet.git"
     }
   , "engines": {
       "node": "*"
@@ -25,6 +23,8 @@
     }
   , "devDependencies": {
         "chai": "*"
+      , "component": "*"
       , "mocha": "*"
+      , "mocha-phantomjs": "*"
     }
 }

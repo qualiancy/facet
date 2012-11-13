@@ -1,0 +1,17 @@
+{
+    "name": "facet"
+  , "repo": "qualiancy/facet"
+  , "version": "0.2.1"
+  , "description": "Configuration mixin for constructors."
+  , "license": "MIT"
+  , "keywords": [
+        "configure"
+      , "settings"
+    ]
+  , "main": "lib/facet.js"
+  , "scripts": [
+        "lib/facet.js"
+    ]
+  , "dependencies": {}
+  , "development": {}
+}

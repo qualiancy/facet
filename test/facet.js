@@ -1,112 +1,144 @@
-
 /*!
  * Sample constructor
  */
 
 function Obj () {
-  facet.init(this);
+  // lolz
 }
 
 /*!
  * Bind facet helper methods
  */
 
-facet.bind(Obj);
+facet(Obj);
 
-describe('facet', function () {
+/*!
+ * Check for all mixin methods
+ */
 
-  describe('construction', function () {
+function checkMethods (obj) {
+  obj.should.respondTo('set');
+  obj.should.respondTo('get');
+  obj.should.respondTo('enable');
+  obj.should.respondTo('disable');
+  obj.should.respondTo('enabled');
+  obj.should.respondTo('disabled');
+}
 
-    function checkMethods (obj) {
-      obj.should.have.property('settings')
-        .an('object');
-      obj.should.respondTo('set');
-      obj.should.respondTo('get');
-      obj.should.respondTo('enable');
-      obj.should.respondTo('disable');
-      obj.should.respondTo('enabled');
-      obj.should.respondTo('disabled');
-    }
+/*!
+ * Tests
+ */
 
-    it('works with prototypes', function () {
-      var obj = new Obj();
-      checkMethods(obj);
-    });
-
-    it('works with objects', function () {
-      var obj = {};
-      facet.init(obj);
-      facet.bind(obj);
-      checkMethods(obj);
-    });
-
-    it('works without init', function () {
-      var obj = {};
-      facet.bind(obj);
-      obj.set('hello', 'universe');
-      checkMethods(obj);
-
-    });
-
+describe('facet(obj)', function () {
+  it('should mixin prototypes', function () {
+    var obj = new Obj();
+    checkMethods(obj);
   });
 
-  describe('configuration', function () {
-
-    it('can set (key/value)', function () {
-      var obj = new Obj();
-      obj.set('hello', 'universe');
-      obj.settings.should.have.property('hello', 'universe');
-    });
-
-    it('can set (object)', function () {
-      var obj = new Obj();
-      obj.set({
-          hello: 'universe'
-        , say: 'hello'
-      });
-
-      obj.settings.should.have.property('hello', 'universe');
-      obj.settings.should.have.property('say', 'hello');
-    });
-
-    it('can get', function () {
-      var obj = new Obj();
-      obj.settings.hello = 'universe';
-      obj.get('hello').should.equal('universe');
-    });
-
-    it('can enable', function () {
-      var obj = new Obj();
-      obj.enable('hello');
-      obj.settings.should.have.property('hello', true);
-    });
-
-    it('can disable', function () {
-      var obj = new Obj();
-      obj.disable('hello');
-      obj.settings.should.have.property('hello', false);
-    });
-
-    it('can check enabled', function () {
-      var obj = new Obj();
-      obj.settings.hello = true;
-      obj.settings.blah = false;
-
-      obj.enabled('hello').should.be.true;
-      obj.enabled('blah').should.be.false;
-      obj.enabled('noop').should.be.false;
-    });
-
-    it('can check disabled', function () {
-      var obj = new Obj();
-      obj.settings.hello = true;
-      obj.settings.blah = false;
-
-      obj.disabled('hello').should.be.false;
-      obj.disabled('blah').should.be.true;
-      obj.disabled('noop').should.be.true;
-    });
-
+  it('should mixin objects', function () {
+    var obj = {};
+    facet(obj);
+    checkMethods(obj);
   });
 
+  it('should use \'settings\' as its property for storage', function () {
+    var obj = new Obj();
+    obj.set('hello', 'universe');
+    obj.should.have.property('settings')
+      .and.have.property('hello', 'universe');
+  });
+});
+
+describe('facet(obj, \'options\')', function () {
+  it('should use \'options\' as its property for storage', function () {
+    function Opts () {};
+    facet(Opts, 'options');
+    var opts = new Opts();
+    opts.set('hello', 'universe');
+    opts.should.not.have.property('settings');
+    opts.should.have.property('options')
+      .and.have.property('hello', 'universe');
+  });
+});
+
+describe('.set(key, value)', function () {
+  it('should modify a setting', function () {
+    var obj = new Obj();
+    obj.set('hello', 'universe');
+    obj.get('hello').should.equal('universe');
+  });
+});
+
+describe('.set(obj)', function () {
+  it('should modify multiple settings', function () {
+    var obj = new Obj();
+    obj.set({ hello: 'universe', say: 'hello' });
+    obj.get('hello').should.equal('universe');
+    obj.get('say').should.equal('hello');
+  });
+});
+
+describe('.get(key)', function () {
+  it('should return an existing value', function () {
+    var obj = new Obj();
+    obj.set('hello', 'universe');
+    obj.get('hello').should.equal('universe');
+  });
+
+  it('should return undefined for values that do not exist', function () {
+    var obj = new Obj();
+    should.equal(obj.get('nullll'), undefined);
+  });
+});
+
+describe('.enable(key)', function () {
+  it('should set a value to true', function () {
+    var obj = new Obj();
+    obj.enable('hello');
+    obj.get('hello').should.be.true;
+  });
+});
+
+describe('.enabled(key)', function () {
+  var obj = new Obj();
+  obj.enable('hello');
+  obj.disable('blah');
+
+  it('should return true when a value is true', function () {
+    obj.enabled('hello').should.be.true;
+  });
+
+  it('should return false when a value is false', function () {
+    obj.enabled('blah').should.be.false;
+  });
+
+  it('should return false for non-existent values', function () {
+    obj.enabled('noop').should.be.false;
+  });
+});
+
+describe('.disable(key)', function () {
+  it('should set a value to false', function () {
+    var obj = new Obj();
+    obj.disable('hello');
+    obj.get('hello').should.be.false;
+  });
+});
+
+describe('.disabled(key)', function () {
+  var obj = new Obj();
+  obj.enable('hello');
+  obj.disable('blah');
+
+  it('should return true when a value is false', function () {
+    obj.disabled('blah').should.be.true;
+  });
+
+  it('should return true when a value does not exist', function () {
+    obj.disabled('noop').should.be.true;
+  });
+
+  it('should return false when a value true', function () {
+    obj.disabled('hello').should.be.false;
+  });
 });

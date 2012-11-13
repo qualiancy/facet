@@ -1,7 +1,7 @@
 {
     "name": "facet"
   , "repo": "qualiancy/facet"
-  , "version": "0.2.1"
+  , "version": "0.3.0"
   , "description": "Configuration mixin for constructors."
   , "license": "MIT"
   , "keywords": [

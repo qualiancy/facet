@@ -1,4 +1,4 @@
-# facet
+# facet [![Build Status](https://secure.travis-ci.org/qualiancy/facet.png?branch=master)](https://travis-ci.org/qualiancy/facet)
 
 > Configuration mixin for constructors.
 

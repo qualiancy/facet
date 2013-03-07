@@ -61,6 +61,28 @@ describe('facet(obj, \'options\')', function () {
   });
 });
 
+describe('facet(obj, handle)', function () {
+  it('should invoke function for each set', function () {
+    function Opts () {};
+
+    var handle = chai.spy('handle', function (key, value) {
+      this.should.be.instanceof(Opts);
+      checkMethods(this);
+      this.should.have.property('settings');
+      key.should.equal('key');
+      value.should.equal('value');
+    });
+
+    facet(Opts, handle);
+
+    var opts = new Opts();
+    opts.set('key', 'value');
+    handle.should.have.been.called.once;
+    opts.get('key').should.equal('value');
+    handle.should.have.been.called.once;
+  });
+});
+
 describe('.set(key, value)', function () {
   it('should modify a setting', function () {
     var obj = new Obj();

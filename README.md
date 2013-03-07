@@ -18,6 +18,8 @@
 
 ## Usage
 
+
+
 ### facet (object[, options])
 
 * **@param** _{Object}_ Constructor or Object
@@ -87,8 +89,7 @@ facet(MyEventEmitter.prototype, {
 ```
 
 
-Once an object is extended,
-you may use any of the following methods.
+## API
 
 
 

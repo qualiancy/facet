@@ -45,7 +45,7 @@ key/value pairs. If you would like to use something else
 you may specify a different storage key.
 
 ```js
-facet(MyConstructor, '_options');
+facet(MyConstructor.prototype, '_options');
 ```
 
 **Handle:** Facet can also invoke a handle anytime a setting is

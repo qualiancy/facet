@@ -1,4 +1,15 @@
 
+0.4.0 / 2013-03-07 
+==================
+
+  * readme: update docs
+  * lib: update comments
+  * test: change to use .prototype
+  * lib: constructor no longer auto select prototype on function input
+  * test: test for handle
+  * lib: remove emit, add handle to allow for custom emit logic
+  * pkg: add chai-spies testing dep
+
 0.3.0 / 2012-11-13 
 ==================
 

@@ -18,8 +18,6 @@
 
 ## Usage
 
-
-
 ### facet (object[, options])
 
 * **@param** _{Object}_ Constructor or Object
@@ -69,7 +67,7 @@ ee.on('settings', function (key, value) {
   console.log('%s was set to: ', key, value);
 });
 
-obj.set('hello', 'universe');
+ee.set('hello', 'universe');
 // "hello was set to: universe"
 ```
 
@@ -102,8 +100,6 @@ facet(MyEventEmitter.prototype, {
 Modify a key/value pair of settings, or use
 an object to modify many settings at once.
 
-`.set()` can also be chained.
-
 ```js
 obj
 .set('hello', 'universe')
@@ -132,8 +128,6 @@ obj.get('hello').should.equal('universe');
 
 Mark a setting key as "enabled" (true).
 
-`.enabled()` can also be chained.
-
 ```js
 obj.enable('loudly');
 ```
@@ -144,9 +138,7 @@ obj.enable('loudly');
 * **@param** _{String}_ key 
 * **@return** _{this}_  for chaining
 
-Mark a setting key as "disabled" (false)
-
-`.disable()` can also be chained.
+Mark a setting key as "disabled" (false).
 
 ```js
 obj.disable('whisper');

@@ -18,11 +18,11 @@
 
 ## Usage
 
-### facet (object[, property])
+### facet (object[, options])
 
 * **@param** _{Object}_ Constructor or Object
-* **@param** _{String}_ Object property to use as storage _(optional)_
-* **@param** _{Boolean}_ Emit `settings` events. _(optional)_
+* **@param** _{Mixed}_ Options 
+* **@return** _{Object}_  Constructor or Object
 
 This mixin provides a way to store arbitray key/value
 pairs on a constructor or object. Furthermore, it provides
@@ -31,44 +31,59 @@ a number of helper methods to retrieve the stored values.
 Begin by applying the mixin to a constructor or object.
 
 ```js
-var facet = require('facet');
-
-// on a constructor (prototype)
-facet(MyConstructor);
+// on a constructor
+facet(MyConstructor.prototype);
 
 // on an object
 var obj = {};
 facet(obj);
 ```
 
-Facet will default to creating and using the `.settings`
-property on the constructor or object to store the
+**Storage:** Facet will default to creating and using the `.settings`
+object on the constructor or object to store the
 key/value pairs. If you would like to use something else
-you may specify a different property key.
+you may specify a different storage key.
 
 ```js
-facet(MyConstructor, 'options');
+facet(MyConstructor, '_options');
 ```
 
-Facet can also emit events anytime a setting has changed
-by assuming the constructor that was extended has an `emit`
-method that conforms to node.js standards. The event emitted
-will equal the name of the storage property. This is **disabled**
-by default.
+**Handle:** Facet can also invoke a handle anytime a setting is
+written. This is preferred method of responding to
+writes as opposed to overwriting the `.set` method.
+
+The `this` context in the handle will be the object
+instance.
 
 ```js
-facet(MyConstructor, true);
-// facet(MyConstructor, 'options', true);
+facet(MyEventEmitter.prototype, function (key, value) {
+  // emit changes on self
+  this.emit('settings', key, value);
+});
 
-var obj = new MyConstructor();
+var ee = new MyEventEmitter();
 
-// obj.on('options', ...
-obj.on('settings', function (key, value) {
-  console.log(key + ' was set to: ', value);
+ee.on('settings', function (key, value) {
+  console.log('%s was set to: ', key, value);
 });
 
 obj.set('hello', 'universe');
 // "hello was set to: universe"
+```
+
+**All Settings:** If you are changing more than one of the
+options than you can use an object as the second argument.
+
+- **@param** _{String}_ `store`
+- **@param** _{Function}_ `handle`
+
+```js
+facet(MyEventEmitter.prototype, {
+    store: '_options'
+  , handle: function (key, value) {
+      this.emit('options', key, value);
+    }
+});
 ```
 
 
@@ -81,13 +96,20 @@ you may use any of the following methods.
 
 * **@param** _{String|Object}_ key or object
 * **@param** _{Mixed}_ value 
+* **@return** _{this}_  for chaining
 
 Modify a key/value pair of settings, or use
 an object to modify many settings at once.
 
+`.set()` can also be chained.
+
 ```js
-obj.set('hello', 'universe');
-obj.set({ hello: 'universe', say: 'loudly' });
+obj
+.set('hello', 'universe')
+.set({
+    hello: 'universe'
+  , say: 'loudly'
+});
 ```
 
 
@@ -105,8 +127,11 @@ obj.get('hello').should.equal('universe');
 #### .enable (key)
 
 * **@param** _{String}_ key 
+* **@return** _{this}_  for chaining
 
 Mark a setting key as "enabled" (true).
+
+`.enabled()` can also be chained.
 
 ```js
 obj.enable('loudly');
@@ -116,8 +141,11 @@ obj.enable('loudly');
 #### .disable (key)
 
 * **@param** _{String}_ key 
+* **@return** _{this}_  for chaining
 
 Mark a setting key as "disabled" (false)
+
+`.disable()` can also be chained.
 
 ```js
 obj.disable('whisper');

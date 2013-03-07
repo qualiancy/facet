@@ -10,7 +10,7 @@ function Obj () {
  * Bind facet helper methods
  */
 
-facet(Obj);
+facet(Obj.prototype);
 
 /*!
  * Check for all mixin methods
@@ -52,7 +52,7 @@ describe('facet(obj)', function () {
 describe('facet(obj, \'options\')', function () {
   it('should use \'options\' as its property for storage', function () {
     function Opts () {};
-    facet(Opts, 'options');
+    facet(Opts.prototype, 'options');
     var opts = new Opts();
     opts.set('hello', 'universe');
     opts.should.not.have.property('settings');
@@ -73,7 +73,7 @@ describe('facet(obj, handle)', function () {
       value.should.equal('value');
     });
 
-    facet(Opts, handle);
+    facet(Opts.prototype, handle);
 
     var opts = new Opts();
     opts.set('key', 'value');

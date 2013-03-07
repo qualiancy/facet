@@ -23,6 +23,7 @@
     }
   , "devDependencies": {
         "chai": "*"
+      , "chai-spies": "*"
       , "component": "*"
       , "mocha": "*"
       , "mocha-phantomjs": "*"

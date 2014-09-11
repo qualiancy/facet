@@ -1,31 +1,29 @@
 {
-    "name": "facet"
-  , "version": "0.4.0"
-  , "description": "Configuration mixin for constructors."
-  , "author": "Jake Luer <jake@qualiancy.com> (http://qualiancy.com)"
-  , "license": "MIT"
-  , "keywords": [
-        "configure"
-      , "settings"
-    ]
-  , "repository": {
-        "type": "git"
-      , "url": "git@github.com:qualiancy/facet.git"
-    }
-  , "engines": {
-      "node": "*"
-    }
-  , "main": "./index"
-  , "scripts": {
-      "test": "make test"
-    }
-  , "dependencies": {
-    }
-  , "devDependencies": {
-        "chai": "*"
-      , "chai-spies": "*"
-      , "component": "*"
-      , "mocha": "*"
-      , "mocha-phantomjs": "*"
-    }
+  "name": "facet",
+  "version": "0.4.0",
+  "description": "Configuration mixin for constructors.",
+  "author": "Jake Luer <jake@alogicalparadox.com>",
+  "license": "MIT",
+  "keywords": [
+    "configure",
+    "settings"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:qualiancy/facet.git"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "main": "./index",
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "chai": "*",
+    "chai-spies": "*",
+    "mocha": "*"
+  }
 }

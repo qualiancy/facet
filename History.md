@@ -1,4 +1,11 @@
 
+0.5.0 / 2014-09-11 
+==================
+
+ * travis: node 0.10 / 0.11
+ * refactor: allow for deep paths and merging
+ * clean: rm -rf coverage/component/browser support
+
 0.4.0 / 2013-03-07 
 ==================
 

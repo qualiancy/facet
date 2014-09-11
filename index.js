@@ -4,6 +4,13 @@
  * MIT Licensed
  */
 
+/*!
+ * External dependencies
+ */
+
+var merge = require('params').merge;
+var pathval = require('pathval');
+
 /**
  * ## Usage
  */
@@ -79,7 +86,7 @@
  * @api public
  */
 
-module.exports = function (proto, opts) {
+module.exports = function(proto, opts) {
   // handle second argument
   if ('string' === typeof opts) {
     opts = { store: opts };
@@ -91,25 +98,32 @@ module.exports = function (proto, opts) {
 
   // fill in the blanks
   if (!opts.store) opts.store = 'settings';
-  if (!opts.handle) opts.handle = function () {};
+  if (!opts.handle) opts.handle = function() {};
 
   /**
    * ## API
    */
 
   /**
-   * #### .set (key[, value])
+   * #### .set (key[, value, force])
    *
-   * Modify a key/value pair of settings, or use
-   * an object to modify many settings at once.
+   * Set an attribute in the `settings` of the internal store. Can `set` entire
+   * objects at a given address to be merged with existing object at the
+   * same address. `force` will replace a value regardless of merge scenario.
    *
    * ```js
-   * obj
-   * .set('hello', 'universe')
-   * .set({
-   *     hello: 'universe'
-   *   , say: 'loudly'
+   * // set at path
+   * obj.set('hello.target', 'world')
+   *
+   * // merge object
+   * obj.set({
+   *   hello: {
+   *     say: 'loudly'
+   *   }
    * });
+   *
+   * // force
+   * obj.set('hello', 'universe', true);
    * ```
    *
    * @param {String|Object} key or object
@@ -118,23 +132,38 @@ module.exports = function (proto, opts) {
    * @api public
    */
 
-  proto.set = (function (opts) {
-    var handle = opts.handle
-      , prop = opts.store;
+  proto.set = (function(opts) {
+    var handle = opts.handle;
+    var prop = opts.store;
 
-    return function (key, value) {
+    return function(key, value, force) {
       var settings = this[prop] || (this[prop] = {});
 
-      if (1 === arguments.length) {
-        if ('string' === typeof key) {
-          return settings[key];
-        } else {
-          for (var name in key) {
-            this.set(name, key[name]);
-          }
+      // .set('key.path') => .get alias
+      if (1 === arguments.length && 'string' === typeof key) {
+        return pathval.get(settings, key);
+
+      // .set(obj, true) => force overwrite
+      } else if ('object' === typeof key && value) {
+        var base = Array.isArray(key) ? [] : {};
+        settings = this[prop] = merge(base, key);
+
+      // .set(obj) => merge overwrite
+      } else if ('object' === typeof key) {
+        for (var name in key) {
+          this.set(name, key[name]);
         }
+
+      // .set(key, obj) => merge at path
       } else {
-        settings[key] = value;
+        if (!force) {
+          var tmp = pathval.get(settings, key);
+          value = tmp && 'object' === typeof tmp
+            ? merge(tmp, value)
+            : value;
+        }
+
+        pathval.set(settings, key, value);
         handle.call(this, key, value);
       }
 
@@ -155,7 +184,7 @@ module.exports = function (proto, opts) {
    * @api public
    */
 
-  proto.get = function (key) {
+  proto.get = function(key) {
     return this.set(key);
   };
 
@@ -173,7 +202,7 @@ module.exports = function (proto, opts) {
    * @api public
    */
 
-  proto.enable = function (key) {
+  proto.enable = function(key) {
     return this.set(key, true);
   };
 
@@ -191,7 +220,7 @@ module.exports = function (proto, opts) {
    * @api public
    */
 
-  proto.disable = function (key) {
+  proto.disable = function(key) {
     return this.set(key, false);
   };
 
@@ -212,7 +241,7 @@ module.exports = function (proto, opts) {
    * @api public
    */
 
-  proto.enabled = function (key) {
+  proto.enabled = function(key) {
     return !! this.get(key);
   };
 
@@ -233,7 +262,7 @@ module.exports = function (proto, opts) {
    * @api public
    */
 
-  proto.disabled = function (key) {
+  proto.disabled = function(key) {
     return !!! this.get(key);
   };
 

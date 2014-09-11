@@ -20,6 +20,8 @@
     "test": "mocha"
   },
   "dependencies": {
+    "params": "^0.1.0",
+    "pathval": "^0.1.1"
   },
   "devDependencies": {
     "chai": "*",
